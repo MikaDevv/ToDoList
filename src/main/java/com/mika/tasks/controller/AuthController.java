@@ -7,24 +7,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mika.tasks.dto.UserRequestDTO;
-import com.mika.tasks.dto.UserResponseDTO;
-import com.mika.tasks.service.UserService;
+import com.mika.tasks.dto.AuthDTO;
+import com.mika.tasks.service.AuthService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
-public class UserController {
-    private final UserService userService;
+public class AuthController {
+    
+    private final AuthService authService;
 
-    @PostMapping("/create")
-    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO uDto){
-        UserResponseDTO u = userService.createUser(uDto);
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@Valid @RequestBody AuthDTO authDTO){
+        String token = authService.login(authDTO);
         
-        return ResponseEntity.status(HttpStatus.CREATED).body(u);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(token);
         
     }
 }
+
+
