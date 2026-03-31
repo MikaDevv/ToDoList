@@ -32,7 +32,8 @@ public class SecurityConfig {
             http
                 .csrf(csrf -> csrf.disable())
                 .addFilterBefore(this.jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/users/create", "/auth/login","/error").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/users/create", "/auth/login", "/error", 
+    "/swagger-ui/**", "/v3/api-docs/**").permitAll().anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
             
             return http.build();
