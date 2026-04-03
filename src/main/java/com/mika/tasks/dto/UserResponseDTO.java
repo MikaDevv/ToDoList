@@ -1,5 +1,5 @@
 package com.mika.tasks.dto;
 
-public record UserResponseDTO(String name, String email) {
+public record UserResponseDTO(Long id, String name, String email) {
     
 }
