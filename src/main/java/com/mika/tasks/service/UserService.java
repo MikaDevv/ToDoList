@@ -2,6 +2,7 @@ package com.mika.tasks.service;
 
 import java.util.Optional;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,13 +30,20 @@ public class UserService {
             String hashedPassword = security.encode(userDto.password());
             u.setPassword(hashedPassword);
             userRepository.save(u);
-            UserResponseDTO userResponseDTO = new UserResponseDTO(userDto.name(), userDto.email());
+            UserResponseDTO userResponseDTO = new UserResponseDTO(u.getId(), userDto.name(), userDto.email());
             return userResponseDTO;
             
         }else{
             throw new UserAlreadyExistsException();
         }
 
+    }
+
+    public UserResponseDTO getUser(){
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<User> resultado = userRepository.findByEmail(email);
+
+        return new UserResponseDTO(resultado.get().getId(), resultado.get().getName(), resultado.get().getEmail());
     }
 
 }
